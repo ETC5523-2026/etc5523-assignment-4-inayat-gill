@@ -1,0 +1,27 @@
+Package: melbfoot
+Title: Explore Hourly Pedestrian Counts in Melbourne
+Version: 0.1.0
+Authors@R:
+    person("Inayat", "Gill", , "igil0008@student.monash.edu", role = c("aut", "cre"))
+Description: Provides hourly pedestrian counts from the City of Melbourne
+    Pedestrian Counting System, summarised by sensor, year, day type and
+    hour of day. Includes helper functions to build typical-day profiles and
+    to measure how foot traffic changed relative to a baseline year, and a
+    'shiny' app that helps business owners and event planners compare
+    locations and years.
+License: MIT + file LICENSE
+URL: https://github.com/ETC5523-2026/etc5523-assignment-4-inayat-gill,
+    https://etc5523-2026.github.io/etc5523-assignment-4-inayat-gill/
+BugReports: https://github.com/ETC5523-2026/etc5523-assignment-4-inayat-gill/issues
+Depends:
+    R (>= 4.1.0)
+Imports:
+    bslib,
+    dplyr,
+    ggplot2,
+    rlang,
+    shiny
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.1.0
