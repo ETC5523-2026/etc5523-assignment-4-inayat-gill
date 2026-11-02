@@ -2,5 +2,5 @@
 
 export(hourly_profile)
 export(launch_app)
-export(recovery_index)
+export(change_index)
 importFrom(rlang,.data)

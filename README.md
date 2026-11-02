@@ -8,7 +8,7 @@
 `melbfoot` helps people who plan around foot traffic in central Melbourne,
 such as café owners and event planners, answer a practical question: **when
 and where are the most people walking past, and how much has foot traffic
-recovered since 2019?**
+changed since 2024?**
 
 The package contains the data, two helper functions and a Shiny app:
 
@@ -17,8 +17,8 @@ The package contains the data, two helper functions and a Shiny app:
 - `ped_sensors`: where each sensor is.
 - `hourly_profile()`: pulls out the typical-day pattern for chosen sensors
   and years.
-- `recovery_index()`: compares each year's average daily traffic with a
-  baseline year (2019 by default).
+- `change_index()`: compares each year's average daily traffic with a
+  baseline year (the earliest year in the data, 2024, by default).
 - `launch_app()`: opens the Shiny app.
 
 ## Data
@@ -57,19 +57,19 @@ launch_app()
 In the app, choose up to three sensor locations, pick the years to compare and
 choose weekday or weekend. The top chart shows the typical hour-by-hour
 pattern, and the bottom chart shows how each year's daily traffic compares
-with 2019.
+with 2024.
 
 ## Example
 
 ``` r
 library(melbfoot)
 
-# Typical weekday in 2019 for the sensor with the most data
+# Typical weekday in the latest year for the sensor with the most data
 busiest <- ped_hourly$location_id[which.max(ped_hourly$n_days)]
-hourly_profile(sensors = busiest, years = 2019, day = "Weekday")
+hourly_profile(sensors = busiest, years = max(ped_hourly$year), day = "Weekday")
 
-# How did daily traffic at the same sensor change after 2019?
-recovery_index(sensors = busiest)
+# How has daily traffic at the same sensor changed since 2024?
+change_index(sensors = busiest)
 ```
 
 ## Documentation

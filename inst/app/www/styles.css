@@ -1,0 +1,127 @@
+/* Styles for the melbfoot Shiny app.
+   Palette: deep navy for structure, teal for emphasis, plenty of white space. */
+
+:root {
+  --ink: #1f2933;
+  --navy: #1b3a4b;
+  --teal: #1f7a8c;
+  --mist: #f1f6f8;
+  --muted: #52606d;
+}
+
+body {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 1.05rem;
+}
+
+/* Title bar */
+.navbar,
+.bslib-page-title {
+  background-color: var(--navy) !important;
+  color: #ffffff !important;
+}
+
+h5.table-title {
+  color: var(--navy);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+/* Who it is for + the question */
+.app-intro {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem 2rem;
+  background: var(--mist);
+  border-left: 6px solid var(--teal);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.app-intro p {
+  margin: 0;
+}
+
+.app-intro-label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--teal);
+  margin-bottom: 0.15rem;
+}
+
+/* "How to read this" notes under each output */
+.how-to-read {
+  background: #ffffff;
+  border: 1px solid #d5e0e5;
+  border-left: 5px solid var(--navy);
+  border-radius: 6px;
+  padding: 0.85rem 1.1rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+/* Sidebar helper text and sensor locations */
+.help-block,
+.form-text {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: -0.25rem;
+  margin-bottom: 1rem;
+}
+
+.sensor-where {
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.sensor-where ul {
+  padding-left: 1.1rem;
+  margin-top: 0.4rem;
+}
+
+.sensor-where li {
+  margin-bottom: 0.35rem;
+}
+
+/* Tables */
+table {
+  font-size: 0.95rem;
+}
+
+table thead th {
+  color: var(--navy);
+  border-bottom: 2px solid var(--navy);
+}
+
+/* Notes and source */
+ul.notes li {
+  margin-bottom: 0.4rem;
+}
+
+p.source {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+/* The message shown when a chart has nothing to show */
+.shiny-output-error-validation {
+  color: var(--navy);
+  font-weight: 600;
+  background: #fff8e6;
+  border-left: 5px solid #e0a100;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+}
+
+#missing_baseline {
+  color: #8a5a00;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}

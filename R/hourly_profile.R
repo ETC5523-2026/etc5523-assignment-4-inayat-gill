@@ -20,9 +20,9 @@
 #' @export
 #'
 #' @examples
-#' # Busiest sensor in the data, weekdays in 2019
+#' # Busiest sensor in the data, weekdays in the latest year
 #' top_sensor <- ped_hourly[which.max(ped_hourly$mean_count), "location_id"][[1]]
-#' hourly_profile(sensors = top_sensor, years = 2019, day = "Weekday")
+#' hourly_profile(sensors = top_sensor, years = max(ped_hourly$year), day = "Weekday")
 hourly_profile <- function(sensors, years, day = c("Weekday", "Weekend"),
                            data = ped_hourly) {
   day <- match.arg(day)
@@ -32,7 +32,7 @@ hourly_profile <- function(sensors, years, day = c("Weekday", "Weekend"),
     stop("`data` must be a data frame with columns: ",
          paste(needed, collapse = ", "), ".", call. = FALSE)
   }
-
+  
   data |>
     dplyr::filter(
       .data$location_id %in% sensors,
