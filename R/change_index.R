@@ -35,7 +35,7 @@ change_index <- function(sensors, baseline_year = NULL, years = NULL,
                          data = ped_hourly) {
   if (!is.null(baseline_year) &&
       (!is.numeric(baseline_year) || length(baseline_year) != 1)) {
-    stop("`baseline_year` must be a single year, such as 2024.", call. = FALSE)
+    stop("`baseline_year` must be a single year, such as 2025.", call. = FALSE)
   }
   needed <- c("location_id", "sensor_name", "year", "day_type", "hour",
               "mean_count")

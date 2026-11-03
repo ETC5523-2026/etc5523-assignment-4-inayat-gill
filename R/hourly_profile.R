@@ -32,7 +32,7 @@ hourly_profile <- function(sensors, years, day = c("Weekday", "Weekend"),
     stop("`data` must be a data frame with columns: ",
          paste(needed, collapse = ", "), ".", call. = FALSE)
   }
-  
+
   data |>
     dplyr::filter(
       .data$location_id %in% sensors,

@@ -35,7 +35,7 @@ type you choose, so you can compare the shape of a typical day across
 places and years. This is the table behind the app's "typical day" chart.
 }
 \examples{
-# Busiest sensor in the data, weekdays in 2019
+# Busiest sensor in the data, weekdays in the latest year
 top_sensor <- ped_hourly[which.max(ped_hourly$mean_count), "location_id"][[1]]
-hourly_profile(sensors = top_sensor, years = 2019, day = "Weekday")
+hourly_profile(sensors = top_sensor, years = max(ped_hourly$year), day = "Weekday")
 }

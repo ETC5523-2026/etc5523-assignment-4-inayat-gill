@@ -13,7 +13,7 @@ value.
 \description{
 Opens the interactive app included in this package. The app lets you compare
 the typical hourly pattern of foot traffic across Melbourne sensor locations
-and years, and see how traffic changed relative to 2019.
+and years, and see how traffic has changed since the earliest year in the data.
 }
 \examples{
 if (interactive()) {

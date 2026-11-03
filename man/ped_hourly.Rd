@@ -43,6 +43,11 @@ year, on weekdays or on weekends. Hours with fewer than 10 recorded days
 were dropped to avoid noisy averages.
 }
 \details{
+Every year covers the same stretch of the calendar, from 1 January to
+2 November, so years can be compared without seasonal differences. Earlier
+parts of the data that did not span a whole January to November window
+(late 2024) and dates after 2 November are not included.
+
 The data are prepared by \code{data-raw/ped_data.R}.
 }
 \examples{

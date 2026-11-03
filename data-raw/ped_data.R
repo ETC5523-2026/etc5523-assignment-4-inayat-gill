@@ -10,6 +10,7 @@
 #   Sensor locations (CC BY 4.0):
 #   https://data.melbourne.vic.gov.au/explore/dataset/pedestrian-counting-system-sensor-locations/
 
+
 library(dplyr)
 library(readr)
 
@@ -90,6 +91,26 @@ counts <- counts_raw |>
          !is.na(count))
 
 stopifnot(all(counts$hour %in% 0:23))
+
+# Make the years comparable. The portal data start part-way through 2024
+# and end part-way through the latest year, so a raw yearly average would
+# compare different seasons. Keep only years that start on 1 January, and
+# only the calendar dates (month and day) up to the last date in the data,
+# so that every year covers exactly the same stretch of the year.
+last_date <- max(counts$sensing_date)
+cutoff_md <- format(last_date, "%m-%d")
+year_starts <- counts |>
+  mutate(year = as.integer(format(sensing_date, "%Y"))) |>
+  group_by(year) |>
+  summarise(first_md = format(min(sensing_date), "%m-%d"), .groups = "drop")
+full_years <- year_starts$year[year_starts$first_md == "01-01"]
+
+counts <- counts |>
+  filter(as.integer(format(sensing_date, "%Y")) %in% full_years,
+         format(sensing_date, "%m-%d") <= cutoff_md)
+
+message("Comparison window: 1 January to ", format(last_date, "%d %B"),
+        " in each of ", paste(full_years, collapse = ", "))
 
 # Average hour-by-hour pattern for each sensor, year and day type.
 # "%u" is the ISO weekday number (1 = Monday ... 7 = Sunday), so it does not

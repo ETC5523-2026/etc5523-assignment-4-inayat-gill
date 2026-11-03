@@ -94,6 +94,12 @@ table {
   font-size: 0.95rem;
 }
 
+/* Keep table columns close together */
+.shiny-html-output table th,
+.shiny-html-output table td {
+  padding: 0.35rem 1.75rem 0.35rem 0.75rem;
+}
+
 table thead th {
   color: var(--navy);
   border-bottom: 2px solid var(--navy);

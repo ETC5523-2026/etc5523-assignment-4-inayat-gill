@@ -46,7 +46,7 @@ field_guide <- data.frame(
   ),
   Meaning = c(
     "A fixed counting device on a Melbourne street. Choose the ones closest to your business or event.",
-    paste0("Calendar year of the counts. ", baseline_year, " is the earliest year in the data and is the baseline for the change chart. The latest year may be incomplete, so check the days of data."),
+    paste0("Calendar year of the counts. ", baseline_year, " is the earliest year in the data and is the baseline for the change chart. Every year covers the same dates (1 January to 2 November), so years can be compared fairly."),
     "Weekday means Monday to Friday. Weekend means Saturday and Sunday.",
     "The hour that starts at the time shown, for example 8am means 8:00 to 8:59.",
     "The average number of people counted by the sensor in that hour, across all recorded days of that type in that year.",
@@ -122,7 +122,7 @@ ui <- page_sidebar(
     
     nav_panel(
       "When is it busiest?",
-      plotOutput("profile", height = "400px", fill = FALSE),
+      plotOutput("profile", height = "auto", fill = FALSE),
       h5("Busiest hour for each sensor and year", class = "table-title"),
       tableOutput("peaks"),
       div(
@@ -145,7 +145,7 @@ ui <- page_sidebar(
         paste0("Each point is a sensor's average daily foot traffic in that year, as a percentage of ", baseline_year, ". "),
         paste0("The dashed line at 100 is the ", baseline_year, " level. Points below it mean fewer people than in ", baseline_year, ". "),
         paste0("Points above it mean foot traffic is higher than in ", baseline_year, ". "),
-        "Compare sensors to see which locations are growing and which are declining."
+        "Compare sensors to see which locations are growing and which are declining. The vertical axis is zoomed in around 100, so even small changes are easy to see. This chart uses a full week (5 weekdays and 2 weekend days) and shows every available year, so the years and type of day you choose on the left only change the first tab."
       )
     ),
     
@@ -158,7 +158,7 @@ ui <- page_sidebar(
         class = "notes",
         tags$li("A count is a person passing a sensor. The same person can be counted more than once, so these are not unique visitors."),
         tags$li("The charts show averages for a typical day, not totals for a particular day."),
-        tags$li("Sensors were added, moved and switched off over time, so some sensors have gaps. Years or hours with fewer than 10 recorded days are left out, and a sensor needs full baseline-year data to appear in the change chart. The latest year may cover only part of the year, so seasonal differences can affect comparisons."),
+        tags$li("Sensors were added, moved and switched off over time, so some sensors have gaps. Years or hours with fewer than 10 recorded days are left out, and a sensor needs full baseline-year data to appear in the change chart. Every year covers the same dates, 1 January to 2 November, so comparisons are not distorted by the season. Only two years are available, so this shows a one-year change, not a long-term trend."),
         tags$li("Foot traffic is only one input to a business decision. It does not show how much people spend or why they were there.")
       ),
       p(
@@ -243,7 +243,10 @@ server <- function(input, output, session) {
         colour = "Year"
       ) +
       app_theme
-  }, alt = "Line chart of the average number of pedestrians in each hour of the day, one line per year, one panel per sensor.")
+  },
+  # Taller chart when more sensors are chosen, so each panel stays readable
+  height = function() max(380, 130 + 170 * length(input$sensors)),
+  alt = "Line chart of the average number of pedestrians in each hour of the day, one line per year, one panel per sensor.")
   
   # Busiest hour table
   output$peaks <- renderTable({
@@ -260,7 +263,7 @@ server <- function(input, output, session) {
         `Average people that hour` = as.integer(round(mean_count)),
         `Days of data` = as.integer(n_days)
       )
-  }, striped = TRUE, spacing = "s", width = "100%")
+  }, striped = TRUE, spacing = "s", width = "auto", align = "lllrr")
   
   # Recovery chart
   output$recovery <- renderPlot({
@@ -270,12 +273,21 @@ server <- function(input, output, session) {
       paste0("None of the chosen sensors has complete ", baseline_year, " data, so no comparison is possible. Try another sensor.")
     ))
     d <- filter(d, !is.na(index))
+    # Zoom the vertical axis around 100 so small changes are visible
+    y_low <- floor(min(d$index, 95) / 5) * 5 - 5
+    y_high <- ceiling(max(d$index, 105) / 5) * 5 + 5
     ggplot(d, aes(year, index, colour = sensor_name, group = sensor_name)) +
       geom_hline(yintercept = 100, linetype = "dashed", colour = "grey40") +
       geom_line(linewidth = 1.2) +
       geom_point(size = 3) +
-      expand_limits(y = 0) +
-      scale_x_continuous(breaks = sort(unique(d$year))) +
+      scale_y_continuous(
+        limits = c(y_low, y_high),
+        labels = function(x) paste0(x, "%")
+      ) +
+      scale_x_continuous(
+        breaks = sort(unique(d$year)),
+        expand = expansion(mult = 0.15)
+      ) +
       scale_colour_viridis_d(end = 0.85) +
       labs(
         x = NULL,
