@@ -1,0 +1,42 @@
+url: https://etc5523-2026.github.io/etc5523-assignment-4-inayat-gill/
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  bslib:
+    primary: "#1b3a4b"
+    secondary: "#1f7a8c"
+
+navbar:
+  bg: primary
+  structure:
+    left: [intro, reference, articles]
+    right: [github]
+
+home:
+  title: "melbfoot: Melbourne foot traffic"
+  description: >
+    Explore when people walk past central Melbourne sensors and how foot
+    traffic has changed since 2025.
+
+reference:
+  - title: Launch the app
+    desc: Open the Shiny app included in the package.
+    contents:
+      - launch_app
+  - title: Summarise foot traffic
+    desc: Functions that prepare the numbers shown in the app.
+    contents:
+      - hourly_profile
+      - change_index
+  - title: Data
+    desc: The pedestrian counts and sensor locations included in the package.
+    contents:
+      - ped_hourly
+      - ped_sensors
+
+articles:
+  - title: Guides
+    navbar: ~
+    contents:
+      - getting-started
