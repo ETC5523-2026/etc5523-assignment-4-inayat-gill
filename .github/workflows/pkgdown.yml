@@ -1,42 +1,47 @@
-url: https://etc5523-2026.github.io/etc5523-assignment-4-inayat-gill/
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  release:
+    types: [published]
+  workflow_dispatch:
 
-template:
-  bootstrap: 5
-  bootswatch: flatly
-  bslib:
-    primary: "#1b3a4b"
-    secondary: "#1f7a8c"
+name: pkgdown.yaml
 
-navbar:
-  bg: primary
-  structure:
-    left: [intro, reference, articles]
-    right: [github]
+permissions: read-all
 
-home:
-  title: "melbfoot: Melbourne foot traffic"
-  description: >
-    Explore when people walk past central Melbourne sensors and how foot
-    traffic has changed since 2025.
+jobs:
+  pkgdown:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
 
-reference:
-  - title: Launch the app
-    desc: Open the Shiny app included in the package.
-    contents:
-      - launch_app
-  - title: Summarise foot traffic
-    desc: Functions that prepare the numbers shown in the app.
-    contents:
-      - hourly_profile
-      - change_index
-  - title: Data
-    desc: The pedestrian counts and sensor locations included in the package.
-    contents:
-      - ped_hourly
-      - ped_sensors
+      - uses: r-lib/actions/setup-pandoc@v2
 
-articles:
-  - title: Guides
-    navbar: ~
-    contents:
-      - getting-started
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::pkgdown, local::.
+          needs: website
+
+      - name: Build site
+        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+        shell: Rscript {0}
+
+      - name: Deploy to GitHub pages
+        if: github.event_name != 'pull_request'
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        with:
+          clean: false
+          branch: gh-pages
+          folder: docs
