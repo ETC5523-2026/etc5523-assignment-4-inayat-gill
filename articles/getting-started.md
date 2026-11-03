@@ -36,7 +36,8 @@ so it works without an internet connection.
 
 ## Use the app
 
-The sidebar has four controls. Each one changes the charts and tables.
+The sidebar has four controls. Sensor locations change both tabs; the
+other three change the first tab.
 
 | Control | What it does |
 |----|----|
